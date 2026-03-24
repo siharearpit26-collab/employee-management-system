@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class EmpAppConfig(AppConfig):
-    name = 'emp_app'
+    name = 'ems_project.emp_app'
