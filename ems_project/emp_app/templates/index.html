@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaise hai aap log</title>
-</head>
-<body>
-    <h1>Kaise hai aap log?</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Home - Employee Management{% endblock %}
+
+{% block content %}
+<div class="card card-custom p-4">
+  <h1 class="page-title">Office Employee Management System</h1>
+  <p class="mb-4 text-muted">Use the actions below to manage employees in your company.</p>
+
+  <div class="d-flex flex-wrap gap-2 btn-group">
+    <a class="btn btn-primary-custom" href="/all_employee/">View All Employees <i class="bi bi-people-fill"></i></a>
+    <a class="btn btn-primary-custom" href="/add_employee/">Add Employee <i class="bi bi-person-plus-fill"></i></a>
+    <a class="btn btn-primary-custom" href="/remove_employee/1/">Remove Employee <i class="bi bi-person-dash-fill"></i></a>
+    <a class="btn btn-primary-custom" href="/filter_employee/1/">Filter Employees <i class="bi bi-funnel-fill"></i></a>
+  </div>
+</div>
+{% endblock %}
+
