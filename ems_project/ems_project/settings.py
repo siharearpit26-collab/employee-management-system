@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Add the inner ems_project dir to sys.path so emp_app is importable
+sys.path.insert(0, str(BASE_DIR))
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-am6z*v_ee=k+lwa!-a^g^c1n&a&$d$g)i)iv$9%mg#iwh(m&32')
 
