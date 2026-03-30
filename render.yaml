@@ -2,11 +2,11 @@ services:
   - type: web
     name: ems-project
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python ems_project/manage.py collectstatic --noinput && python ems_project/manage.py migrate"
-    startCommand: "gunicorn ems_project.ems_project.wsgi:application --chdir ems_project"
+    buildCommand: "pip install -r requirements.txt && cd ems_project && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn ems_project.wsgi:application --chdir ems_project"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: ems_project.ems_project.settings
+        value: ems_project.settings
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
