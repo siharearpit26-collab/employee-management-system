@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ems-project
+    runtime: python
+    rootDir: ems_project
+    buildCommand: "pip install -r ../requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn ems_project.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: ems_project.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DEBUG
+        value: "False"
