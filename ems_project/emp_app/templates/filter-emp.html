@@ -1,27 +1,104 @@
 {% extends 'base.html' %}
-{% block title %}Filter Employee{% endblock %}
+{% block title %}Filter Employees{% endblock %}
 
 {% block content %}
-<div class="card card-custom p-4">
+<div class="card card-custom p-4 mb-4">
   <h1 class="page-title">Filter Employees</h1>
-  <p class="text-muted">Search by name, department, role, or location.</p>
+  <p class="text-muted mb-4">Search employees by name, department, role, or hire date.</p>
 
-  <form class="row gy-3 gx-2 align-items-end">
-    <div class="col-md-3">
-      <label class="form-label">First Name</label>
-      <input class="form-control" type="text" />
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Last Name</label>
-      <input class="form-control" type="text" />
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Department</label>
-      <input class="form-control" type="text" />
-    </div>
-    <div class="col-md-3">
-      <button class="btn btn-primary-custom w-100">Apply Filter</button>
+  <form method="GET" action="/filter_employee/1/">
+    <div class="row gy-3 gx-2 align-items-end">
+
+      <div class="col-md-3">
+        <label for="first_name" class="form-label fw-semibold">First Name</label>
+        <input class="form-control" type="text" id="first_name" name="first_name"
+          placeholder="e.g. John" value="{{ get.first_name|default:'' }}">
+      </div>
+
+      <div class="col-md-3">
+        <label for="last_name" class="form-label fw-semibold">Last Name</label>
+        <input class="form-control" type="text" id="last_name" name="last_name"
+          placeholder="e.g. Doe" value="{{ get.last_name|default:'' }}">
+      </div>
+
+      <div class="col-md-3">
+        <label for="department" class="form-label fw-semibold">Department</label>
+        <select class="form-select" id="department" name="department">
+          <option value="">All Departments</option>
+          {% for dept in departments %}
+          <option value="{{ dept.id }}" {% if get.department == dept.id|stringformat:"s" %}selected{% endif %}>
+            {{ dept.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="role" class="form-label fw-semibold">Role</label>
+        <select class="form-select" id="role" name="role">
+          <option value="">All Roles</option>
+          {% for r in roles %}
+          <option value="{{ r.id }}" {% if get.role == r.id|stringformat:"s" %}selected{% endif %}>
+            {{ r.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="hire_date" class="form-label fw-semibold">Hire Date</label>
+        <input class="form-control" type="date" id="hire_date" name="hire_date"
+          value="{{ get.hire_date|default:'' }}">
+      </div>
+
+      <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary-custom w-100">
+          <i class="bi bi-funnel-fill me-1"></i> Apply Filter
+        </button>
+        <a href="/filter_employee/1/" class="btn btn-outline-secondary w-100">Clear</a>
+      </div>
+
     </div>
   </form>
 </div>
+
+{% if filtered %}
+<div class="card card-custom p-4">
+  {% if emps %}
+  <p class="text-muted mb-3">{{ emps|length }} result{{ emps|length|pluralize }} found.</p>
+  <div class="table-responsive">
+    <table class="table table-custom table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Department</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Salary</th>
+          <th>Hire Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for emp in emps %}
+        <tr>
+          <td>{{ emp.id }}</td>
+          <td>{{ emp.first_name }}</td>
+          <td>{{ emp.last_name }}</td>
+          <td>{{ emp.department.name }}</td>
+          <td>{{ emp.role.name }}</td>
+          <td>{{ emp.phone }}</td>
+          <td>${{ emp.salary }}</td>
+          <td>{{ emp.hire_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="no-data"><i class="bi bi-search me-2"></i>No employees match your filter.</p>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

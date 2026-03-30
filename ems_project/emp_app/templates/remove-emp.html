@@ -4,15 +4,51 @@
 {% block content %}
 <div class="card card-custom p-4">
   <h1 class="page-title">Remove Employee</h1>
-  <p class="text-muted">Enter the employee ID to remove from the list.</p>
+  <p class="text-muted mb-4">Enter the employee ID to permanently delete them from the system.</p>
 
-  <form class="row g-3">
-    <div class="col-md-4">
-      <label class="form-label">Employee ID</label>
-      <input class="form-control" type="number" min="1" placeholder="1" />
+  {% if success %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i> Employee removed successfully.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/remove_employee/1/">
+    {% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label for="employee_id" class="form-label fw-semibold">Employee ID</label>
+        <input
+          class="form-control"
+          type="number"
+          id="employee_id"
+          name="employee_id"
+          min="1"
+          placeholder="Enter employee ID"
+          value="{{ employee.id|default:'' }}"
+          required
+        />
+        {% if employee %}
+        <div class="form-text">
+          Found: <strong>{{ employee.first_name }} {{ employee.last_name }}</strong>
+        </div>
+        {% endif %}
+      </div>
     </div>
-    <div class="col-12">
-      <button class="btn btn-danger btn-lg">Remove</button>
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-danger"
+        onclick="return confirm('Are you sure? This cannot be undone.')">
+        <i class="bi bi-person-dash-fill me-1"></i> Remove Employee
+      </button>
+      <a href="/" class="btn btn-outline-secondary">Cancel</a>
     </div>
   </form>
 </div>

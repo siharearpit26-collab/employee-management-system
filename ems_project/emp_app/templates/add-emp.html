@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Add Employee{% endblock %}
+
+{% block content %}
+<div class="card card-custom p-4">
+  <h1 class="page-title">Add New Employee</h1>
+  <p class="text-muted mb-4">Fill in the details below to register a new employee.</p>
+
+  {% if success %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i> Employee added successfully.
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label for="first_name" class="form-label fw-semibold">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="e.g. John" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="last_name" class="form-label fw-semibold">Last Name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="e.g. Doe" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="department" class="form-label fw-semibold">Department</label>
+        <select class="form-select" id="department" name="department" required>
+          <option value="" disabled selected>Select department</option>
+          {% for dept in departments %}
+          <option value="{{ dept.id }}">{{ dept.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="role" class="form-label fw-semibold">Role</label>
+        <select class="form-select" id="role" name="role" required>
+          <option value="" disabled selected>Select role</option>
+          {% for r in roles %}
+          <option value="{{ r.id }}">{{ r.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="phone" class="form-label fw-semibold">Phone</label>
+        <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 0712345678" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="hire_date" class="form-label fw-semibold">Hire Date</label>
+        <input type="date" class="form-control" id="hire_date" name="hire_date" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="salary" class="form-label fw-semibold">Salary</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="salary" name="salary" placeholder="0" min="0" required>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="bonus" class="form-label fw-semibold">Bonus <span class="text-muted fw-normal">(optional)</span></label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="bonus" name="bonus" placeholder="0" min="0">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary-custom">
+        <i class="bi bi-person-plus-fill me-1"></i> Add Employee
+      </button>
+      <a href="/" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
