@@ -4,13 +4,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# On Render, working dir is repo root so BASE_DIR (inner ems_project/) isn't
-# on sys.path yet — add it so emp_app and ems_project.urls are importable.
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
-
-# Detect if we're running from repo root (Render) or from inside ems_project/ (local)
-_running_from_repo_root = 'ems_project.ems_project' in os.environ.get('DJANGO_SETTINGS_MODULE', '')
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-am6z*v_ee=k+lwa!-a^g^c1n&a&$d$g)i)iv$9%mg#iwh(m&32')
 
@@ -39,7 +34,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ems_project.ems_project.urls' if _running_from_repo_root else 'ems_project.urls'
+ROOT_URLCONF = 'ems_project.urls'
 
 TEMPLATES = [
     {
@@ -56,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ems_project.ems_project.wsgi.application' if _running_from_repo_root else 'ems_project.wsgi.application'
+WSGI_APPLICATION = 'ems_project.wsgi.application'
 
 DATABASES = {
     'default': {
